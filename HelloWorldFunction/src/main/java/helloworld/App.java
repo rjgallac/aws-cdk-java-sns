@@ -20,7 +20,10 @@ import com.amazonaws.services.lambda.runtime.events.SNSEvent;
 public class App implements RequestHandler<SNSEvent, Void> {
 
     public Void handleRequest(final SNSEvent snsEvent, final Context context) {
-        context.getLogger().log(snsEvent.getRecords().get(0).getSNS().getMessage());
+        snsEvent.getRecords().forEach( r -> {
+            context.getLogger().log(r.getSNS().getMessage());
+
+        });
         return null;
 
     }

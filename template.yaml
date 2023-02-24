@@ -21,6 +21,25 @@ Resources:
           Properties:
             Topic:
               Ref: MySNSTopic
+  SecondFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: SecondFunction
+      Handler: secondfunction.App::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Timeout: 20
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        SNS1:
+          Type: SNS
+          Properties:
+            Topic:
+              Ref: MySNSTopic
   MySNSTopic:
     Type: AWS::SNS::Topic
     Properties:
