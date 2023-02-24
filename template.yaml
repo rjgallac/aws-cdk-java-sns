@@ -2,6 +2,30 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: aws-cdk-java-sns
 Resources:
+  FirstFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: FirstFunction
+      Handler: firstfunction.App::handleRequest
+      Runtime: java11
+      Architectures:
+        - x86_64
+      MemorySize: 512
+      Timeout: 20
+      Environment:
+        Variables:
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          TOPIC_ARN: !Ref MySNSTopic
+      Policies:
+        - SNSPublishMessagePolicy:
+            TopicName:
+              !GetAtt MySNSTopic.TopicName
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello
+            Method: get
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
