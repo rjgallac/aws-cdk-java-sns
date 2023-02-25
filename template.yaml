@@ -67,6 +67,7 @@ Resources:
       Environment:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          REST_URL: https://m97rr6-8080.preview.csb.app/?country=uk
       Events:
         SNS1:
           Type: SNS
@@ -123,3 +124,7 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+
+#  RedisCaching:
+#    Type: AWS::ElastiCache::CacheCluster
+#    Properties:
