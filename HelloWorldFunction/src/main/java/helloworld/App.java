@@ -13,15 +13,17 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import com.amazonaws.services.lambda.runtime.events.SQSEvent;
 
 /**
  * Handler for requests to Lambda function.
  */
-public class App implements RequestHandler<SNSEvent, Void> {
+public class App implements RequestHandler<SQSEvent, Void> {
 
-    public Void handleRequest(final SNSEvent snsEvent, final Context context) {
-        snsEvent.getRecords().forEach( r -> {
-            context.getLogger().log(r.getSNS().getMessage());
+    public Void handleRequest(final SQSEvent sqsEvent, final Context context) {
+        context.getLogger().log("test");
+        sqsEvent.getRecords().forEach( r -> {
+            context.getLogger().log(r.getBody());
 
         });
         return null;
