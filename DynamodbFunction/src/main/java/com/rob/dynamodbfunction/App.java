@@ -1,4 +1,4 @@
-package helloworld;
+package com.rob.dynamodbfunction;
 
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;

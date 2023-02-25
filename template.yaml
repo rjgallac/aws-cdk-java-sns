@@ -2,11 +2,11 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: aws-cdk-java-sns
 Resources:
-  FirstFunction:
+  GatewayFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: FirstFunction
-      Handler: firstfunction.App::handleRequest
+      CodeUri: GatewayFunction
+      Handler: com.rob.gatewayfunction.App::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -27,11 +27,11 @@ Resources:
             Path: /hello
             Method: get
 
-  HelloWorldFunction:
+  DynamodbFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: HelloWorldFunction
-      Handler: helloworld.App::handleRequest
+      CodeUri: DynamodbFunction
+      Handler: com.rob.dynamodbfunction.App::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -54,11 +54,11 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref DynamoDBTable
 
-  SecondFunction:
+  RestWeatherApiFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: SecondFunction
-      Handler: secondfunction.App::handleRequest
+      CodeUri: RestWeatherFunction
+      Handler: com.rob.restweatherapifunction.App::handleRequest
       Runtime: java11
       Architectures:
         - x86_64
@@ -78,7 +78,6 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: "Test"
-
 
   MySqsQueue:
     Type: AWS::SQS::Queue
@@ -109,7 +108,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !GetAtt HelloWorldFunction.Arn
+      FunctionName: !GetAtt DynamodbFunction.Arn
       Principal: sns.amazonaws.com
 
   DynamoDBTable:
