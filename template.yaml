@@ -40,6 +40,7 @@ Resources:
       Environment:
         Variables:
           JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          DYNO_TABLE: !Ref DynamoDBTable
       Events:
         MySQSEvent:
           Type: SQS
@@ -50,7 +51,8 @@ Resources:
         - SQSPollerPolicy:
             QueueName:
               !GetAtt MySqsQueue.QueueName
-
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DynamoDBTable
 
   SecondFunction:
     Type: AWS::Serverless::Function
@@ -109,3 +111,16 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !GetAtt HelloWorldFunction.Arn
       Principal: sns.amazonaws.com
+
+  DynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
